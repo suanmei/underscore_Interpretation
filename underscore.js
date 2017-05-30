@@ -51,13 +51,13 @@
   // 创建一个对于 Underscore 对象的安全引用以便在下面使用
   var _ = function(obj) {
 
-		// 如果 obj 已经是 `_` 函数的实例，则直接返回 obj
+    // 如果 obj 已经是 `_` 函数的实例，则直接返回 obj
     if (obj instanceof _) return obj;
 
-		// 如果不是 `_` 函数的实例，则调用 new 运算符，返回实例化的对象
+    // 如果不是 `_` 函数的实例，则调用 new 运算符，返回实例化的对象
     if (!(this instanceof _)) return new _(obj);
 
-		// 将 obj 赋值给 this._wrapped 属性
+    // 将 obj 赋值给 this._wrapped 属性
     this._wrapped = obj;
   };
 
@@ -90,7 +90,7 @@
   // optimizeCb 会被重复应用在其他 Underscore 函数中
   var optimizeCb = function(func, context, argCount) {
 
-		// 如果 context 为 undefined ，直接返回 func
+    // 如果 context 为 undefined ，直接返回 func
     if (context === void 0) return func;
 
     switch (argCount) {
@@ -110,7 +110,7 @@
       };
     }
 
-		// 其实不用上面的 switch-case 语句
+    // 其实不用上面的 switch-case 语句
     // 直接执行下面的 return 函数就行了
     // 不这样做的原因是 call 比 apply 快很多
     // .apply 在运行前要对作为参数的数组进行一系列检验和深拷贝，.call 则没有这些步骤
@@ -153,8 +153,8 @@
   // 它会获取传入一个数组并在给定索引之后（包括索引对应的值）的参数
   var restArgs = function(func, startIndex) {
 
-		// 如果给定 startIndex ，则进行 Number 转换（因为传入的可能是字符串 '1'， + 进行的是 Number 转换）
-		// 如果没有给定 startIndex，则将其设定为 func 的形参个数 - 1
+    // 如果给定 startIndex ，则进行 Number 转换（因为传入的可能是字符串 '1'， + 进行的是 Number 转换）
+    // 如果没有给定 startIndex，则将其设定为 func 的形参个数 - 1
     startIndex = startIndex == null ? func.length - 1 : +startIndex;
     return function() {
       var length = Math.max(arguments.length - startIndex, 0),
@@ -181,33 +181,33 @@
   // 创建一个新对象，继承于另一个对象
   var baseCreate = function(prototype) {
 
-		// 检查传递给 baseCreate 的是否是一个对象
-    // 不是的话只需返回一个对象（通过对象字面量），因为这里没有一个有效的对象赖以继承
+    // 检查传递给 baseCreate 的是否是一个对象
+    // 不是的话只需返回一个对象（通过对象字面量），因为这里没有一个有效的对象赖以继承
     if (!_.isObject(prototype)) return {};
 
-		// 检查是否支持 Object.create 方法，支持的话返回 Object.create(prototype) 返回的对象
+    // 检查是否支持 Object.create 方法，支持的话返回 Object.create(prototype) 返回的对象
     if (nativeCreate) return nativeCreate(prototype);
 
-		// 不支持则通过构造函数来继承
+    // 不支持则通过构造函数来继承
     Ctor.prototype = prototype;
     var result = new Ctor;
 
-		// 将 Ctor.prototype 重置为空，释放内存
+    // 将 Ctor.prototype 重置为空，释放内存
     Ctor.prototype = null;
     return result;
   };
 
-	// 高级函数
-	// 返回一个获取对象的第一层级属性的函数
+  // 高级函数
+  // 返回一个获取对象的第一层级属性的函数
   var shallowProperty = function(key) {
     return function(obj) {
 
-			// undefined == null 返回true
+      // undefined == null 返回true
       return obj == null ? void 0 : obj[key];
     };
   };
 
-	// 获取一个对象的深层级的属性
+  // 获取一个对象的深层级的属性
   var deepGet = function(obj, path) {
     var length = path.length;
     for (var i = 0; i < length; i++) {
@@ -225,11 +225,11 @@
   // JavaScript 能够精确表示的最大的数字
   var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
 
-	// 用来获取传入参数的 length 属性值
+  // 用来获取传入参数的 length 属性值
   var getLength = shallowProperty('length');
 
-	// 判断 collection 是否是类数组对象，类数组对象包括：
-	// 数组、arguments、HTML Collection 以及 NodeList
+  // 判断 collection 是否是类数组对象，类数组对象包括：
+  // 数组、arguments、HTML Collection 以及 NodeList
   // 类似 {length: 10} 这样的对象
   // 字符串、函数等
   var isArrayLike = function(collection) {
@@ -255,10 +255,10 @@
   // notice: iteratee 中如果带有 return ，会直接退出 _.each 方法
   _.each = _.forEach = function(obj, iteratee, context) {
 
-		// 如果 context 为空，直接返回 iteratee；
-		// 否则返回: function(value, index, collection) {
-		//   return func.call(context, value, index, collection);
-		// };
+    // 如果 context 为空，直接返回 iteratee；
+    // 否则返回: function(value, index, collection) {
+    //   return func.call(context, value, index, collection);
+    // };
     iteratee = optimizeCb(iteratee, context);
     var i, length;
     if (isArrayLike(obj)) {
@@ -266,7 +266,8 @@
         iteratee(obj[i], i, obj);
       }
     } else {
-			// 获取对象的键值集合
+
+      // 获取对象的键值集合
       var keys = _.keys(obj);
       for (i = 0, length = keys.length; i < length; i++) {
         iteratee(obj[keys[i]], keys[i], obj);
@@ -280,17 +281,17 @@
   _.map = _.collect = function(obj, iteratee, context) {
     iteratee = cb(iteratee, context);
 
-		// 如果 obj 不是数组或类类数组的话，就取它的键值集合
+    // 如果 obj 不是数组或类类数组的话，就取它的键值集合
     var keys = !isArrayLike(obj) && _.keys(obj),
 
-				// obj 为原始对象，则 length = key.length
-				// obj 为数组或类数组，则 length = obj.length
+        // obj 为原始对象，则 length = key.length
+        // obj 为数组或类数组，则 length = obj.length
         length = (keys || obj).length,
         results = Array(length);
     for (var index = 0; index < length; index++) {
       var currentKey = keys ? keys[index] : index;
 
-			// 每次执行后的返回值都存放在 results 数组中
+      // 每次执行后的返回值都存放在 results 数组中
       results[index] = iteratee(obj[currentKey], currentKey, obj);
     }
     return results;
@@ -304,11 +305,11 @@
       var keys = !isArrayLike(obj) && _.keys(obj),
           length = (keys || obj).length,
 
-					// 如果 dir 为正数，则代表从左向右遍历，否则从右向左遍历
+          // 如果 dir 为正数，则代表从左向右遍历，否则从右向左遍历
           index = dir > 0 ? 0 : length - 1;
 
-			// 如果设置了初始值（ memo 被赋值了），则 memo 为初始值，从 obj 第一个元素开始遍历
-			// 否则，将 obj 第一个元素设为初始值，从第二个元素开始遍历
+      // 如果设置了初始值（ memo 被赋值了），则 memo 为初始值，从 obj 第一个元素开始遍历
+      // 否则，将 obj 第一个元素设为初始值，从第二个元素开始遍历
       if (!initial) {
         memo = obj[keys ? keys[index] : index];
         index += dir;
@@ -316,7 +317,7 @@
       for (; index >= 0 && index < length; index += dir) {
         var currentKey = keys ? keys[index] : index;
 
-				// 每次迭代返回值，赋值 memo ，供下一次迭代使用
+        // 每次迭代返回值，赋值 memo ，供下一次迭代使用
         memo = iteratee(memo, obj[currentKey], currentKey, obj);
       }
       return memo;
@@ -324,7 +325,7 @@
 
     return function(obj, iteratee, memo, context) {
 
-			// 如果传入了初始值（指 memo 被赋值了），则 initial 为 true
+      // 如果传入了初始值（指 memo 被赋值了），则 initial 为 true
       var initial = arguments.length >= 3;
       return reducer(obj, optimizeCb(iteratee, context, 4), memo, initial);
     };
@@ -346,7 +347,7 @@
   // 如果都不满足，返回 undefined
   _.find = _.detect = function(obj, predicate, context) {
 
-		// 如果是数组或类数组，使用 _.findIndex，否则使用 _.findKey
+    // 如果是数组或类数组，使用 _.findIndex，否则使用 _.findKey
     var keyFinder = isArrayLike(obj) ? _.findIndex : _.findKey;
     var key = keyFinder(obj, predicate, context);
     if (key !== void 0 && key !== -1) return obj[key];
@@ -381,11 +382,11 @@
     for (var index = 0; index < length; index++) {
       var currentKey = keys ? keys[index] : index;
 
-			// 如果当前元素不满足条件，结束遍历，返回 false
+      // 如果当前元素不满足条件，结束遍历，返回 false
       if (!predicate(obj[currentKey], currentKey, obj)) return false;
     }
 
-		// 如果所有元素都满足条件，结束遍历，返回 true
+    // 如果所有元素都满足条件，结束遍历，返回 true
     return true;
   };
 
@@ -399,11 +400,11 @@
     for (var index = 0; index < length; index++) {
       var currentKey = keys ? keys[index] : index;
 
-			// 如果当前元素满足条件，结束遍历，返回 true
+      // 如果当前元素满足条件，结束遍历，返回 true
       if (predicate(obj[currentKey], currentKey, obj)) return true;
     }
 
-		// 如果所有元素都不满足条件，结束遍历，返回 false
+    // 如果所有元素都不满足条件，结束遍历，返回 false
     return false;
   };
 
