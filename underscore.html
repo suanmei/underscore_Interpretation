@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+
+<script src="underscore.js"></script>
+<script>
+	console.log(undefined === void 0); // true
+
+	var obj1 = {
+		a: "a",
+		b: "b",
+		3: "3"
+	};
+	var arr1 = [1, 2, 3];
+
+	_.each(obj1, function(value, index, obj) {
+		console.log(value, index, obj);
+	});
+
+	_.each(arr1, function(value, index, arr) {
+		console.log(value, index, arr);
+	});
+
+	var num1 = 1;
+	console.log(num1.length); // undefined
+
+	console.log([1] == [1]); //false
+</script>
+</body>
+</html>
