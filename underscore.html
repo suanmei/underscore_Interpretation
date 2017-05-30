@@ -31,6 +31,10 @@
 	console.log(num1.length); // undefined
 
 	console.log([1] == [1]); //false
+
+	console.log(_.invoke([1,2], function(a,b) {
+		var a = a + b;
+	}), 3);
 </script>
 </body>
 </html>

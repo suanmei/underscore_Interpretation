@@ -154,7 +154,7 @@
   var restArgs = function(func, startIndex) {
 
     // 如果给定 startIndex ，则进行 Number 转换（因为传入的可能是字符串 '1'， + 进行的是 Number 转换）
-    // 如果没有给定 startIndex，则将其设定为 func 的形参个数 - 1
+    // 如果没有给定 startIndex，则将其设定为 func 的形参个数 - 1，也就是用最后一个形参来收集其他参数
     startIndex = startIndex == null ? func.length - 1 : +startIndex;
     return function() {
       var length = Math.max(arguments.length - startIndex, 0),
@@ -413,18 +413,27 @@
   // 判断数组或者对象中是否有指定元素
   // 用的是 === 来判断的
   _.contains = _.includes = _.include = function(obj, item, fromIndex, guard) {
+
+    // 如果不是数组或者类数组，则取它的属性值（数组形式返回）
     if (!isArrayLike(obj)) obj = _.values(obj);
     if (typeof fromIndex != 'number' || guard) fromIndex = 0;
+
+    // 判断该元素在集合中是否存在
     return _.indexOf(obj, item, fromIndex) >= 0;
   };
 
   // Invoke a method (with arguments) on every item in a collection.
+  // 对集合中的每一个元素调用传入的方法，方法后面附加的参数也都会一并传给这个方法
   _.invoke = restArgs(function(obj, path, args) {
     var contextPath, func;
     if (_.isFunction(path)) {
       func = path;
     } else if (_.isArray(path)) {
+
+      // 截取 path 除了最后一位前面所有位，赋值给 contextPath
       contextPath = path.slice(0, -1);
+
+      // path 重新赋值为 path 最后一位
       path = path[path.length - 1];
     }
     return _.map(obj, function(context) {
@@ -441,18 +450,21 @@
   });
 
   // Convenience version of a common use case of `map`: fetching a property.
+  // 获取数组对象的属性值，以数组形式返回
   _.pluck = function(obj, key) {
     return _.map(obj, _.property(key));
   };
 
   // Convenience version of a common use case of `filter`: selecting only objects
   // containing specific `key:value` pairs.
+  // 遍历 list 中的每一个值，返回一个数组，这个数组包含 attr 所列出的属性的所有的 键 - 值对
   _.where = function(obj, attrs) {
     return _.filter(obj, _.matcher(attrs));
   };
 
   // Convenience version of a common use case of `find`: getting the first object
   // containing specific `key:value` pairs.
+  // 遍历整个list，返回匹配 attr 参数所列出的所有 键 - 值 对的第一个值
   _.findWhere = function(obj, attrs) {
     return _.find(obj, _.matcher(attrs));
   };
@@ -1547,9 +1559,13 @@
   _.noop = function(){};
 
   _.property = function(path) {
+
+    // 如果不是数组，就返回用于获取某个固定属性的函数
     if (!_.isArray(path)) {
       return shallowProperty(path);
     }
+
+    // 如果是数组，就返回能够获取深层级属性的函数
     return function(obj) {
       return deepGet(obj, path);
     };
